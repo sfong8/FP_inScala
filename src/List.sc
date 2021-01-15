@@ -68,9 +68,23 @@ object List {
     foldRight(listx,Nil:List[String])((head,tail)=> Cons(head.toString,tail))
   }
 
-  def map[A,B](as: List[A])(f: A => B): List[B] = {
-    f(, foldRight(xs, z)(f))
+  def map[A,B](l: List[A])(f: A => B): List[B] =
+    foldRight(l, Nil:List[B])((h,t) => Cons(f(h),t))
+
+  def filter[A](as: List[A])(f: A => Boolean): List[A] = {
+    foldRight(as, Nil:List[A])((h,t) => if (f(h)) Cons(h,t) else t)
   }
+
+
+  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = {
+    Array.concat(map(l)(f))
+  }
+
+
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+
+  }
+
 }
 
 val x = List(1,2,3,4,5) match {
