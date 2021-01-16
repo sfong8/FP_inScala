@@ -18,13 +18,21 @@ trait Option[+A] {
     case _ => this
   }
 
-  def filter(f: A => Boolean): Option[A] =
-    flatMap(a => if (f(a)) Some(a) else None)
 
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C]= {
+    a.flatMap(aa => b map (bb => f(aa, bb)))
+  }
 
+  def sequence[A](a: List[Option[A]]): Option[List[A]] =
+    a match {
+      case Nil => Some(Nil)
+      case h :: t => h flatMap (hh => sequence(t) map (hh :: _))
+    }
 }
 
 
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
+
+
 
